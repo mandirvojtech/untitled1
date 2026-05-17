@@ -8,6 +8,36 @@ int zlato = 0, levelhrace = 1, hracXP = 0;
 
 
 int main() {
+    cout << R"(
+
+              /\
+             /  \
+            |    |
+          --:'''':--
+            :'_' :
+            _:"":\___
+ ' '      ____.' :::     '._
+. *=====<<=)           \    :
+ .  '      '-'-'\_      /'._.'
+                  \====:_ ""
+                 .'     \\
+                :       :
+               /   :    \
+              :   .      '.
+              :  : :      :
+              :__:-:__.;--'
+
+██████╗  █████╗ ██████╗ ██╗  ██╗
+██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝
+██║  ██║███████║██████╔╝█████╔╝
+██║  ██║██╔══██║██╔══██╗██╔═██╗
+██████╔╝██║  ██║██║  ██║██║  ██╗
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+         LEGENDS OF THE DUNGEON
+
+)" << endl;
+
     srand(time(NULL)); // náhoda ve výběru
 
     // jak se vybere classa
@@ -24,6 +54,76 @@ int main() {
             cout << "Class Paladin -> Zivot 5/5, Utok 3, Mana 5/5... \n";
             cout << "Schopnosti: Uder (3 dmg), Uder svetlem (1 vsem a -2 many), Uzdraveni (+1 HP a -1 mana) \n";
         }
+        else if (volba == 2) {
+            hracmaxHP = 4; hracutok = 4; hracmaxmana = 3;
+            cout << "Class Lovec -> Zivot 4/4, Utok 4, Mana 3/3... \n";
+            cout << "Schopnosti:  Zamerena strela (6 dmg, -2 mana), Salva (1 vsem, -2 mana), Prvni pomoc (+2 HP, -2 mana)\n";
+        }
+        else if (volba == 3) {
+            hracmaxHP = 3; hracutok = 3; hracmaxmana = 7;
+            cout << "Class Warlock. Zivot 4/4, Utok 3, Mana 5/5.\n";
+            cout << "Schopnosti: Shadow bolt (4 dmg, -2 mana), Drain Life (3 dmg +3 HP, -3 mana), Curse (neco...)\n";
+        }
+        else if (volba == 4) {
+            hracmaxHP = 4; hracutok = 3; hracmaxmana = 2;
+            cout << "Class Warlock. Zivot 4/4, Utok 3, Mana 5/5.\n";
+            cout << "Schopnosti: Shadow bolt (4 dmg, -2 mana), Drain Life (3 dmg +3 HP, -3 mana), Curse (neco...)\n";
+        }
+        else {
+            cout << "Neplatna volba :( \n";
+            continue; // znamena preskoc interakci aby se smycka po spatnee volve ukoncila
+        }
+        hracHP = hracmaxHP;
+        hracmana = hracmaxmana;
+        cout << "Potrvrdti (1) nebo jimnak (0)? ";
+        int jimnak; cin >> jimnak;
+        if (jimnak == 1) break;
     }
 
+    // Posloupnost podle toho jak to je v moodlu... lepší způsob mě nenapadl :(
+    // použiju vektory jak mi ai poradila - je to pole textových hodnot a uchovává tu posloupnost jak chci je to také chytré pole xd
+    vector<string> mapEvents = {
+        "V","M","M","2M","MB","V","M","2M","2M","MB","V","2M","2M","3M","V","HB"
+    };
+
+    // ted bude smycka hry
+    // event mi poradila ai na situace
+    for (string event: mapEvents) {
+        if (event == "V") {
+            navstivVesnici(); // tu funkci nekdy napisu :)
+        }
+        else if (event == "M") {
+            cout << "\n Souboj s monstrem \n";
+            souboj(1, 10, 2, false); // podle funkce ktera je dole
+        }
+        else if (event == "2M") {
+            cout << "\n Souboj s 2 monstry \n";
+            souboj(2, 8, 1, false);
+        }
+        else if (event == "3M") {
+            cout << "\n Souboj s 3 monstry \n";
+            souboj(3, 6, 1, false);
+        }
+        else if (event == "MB") {
+            cout << "\n Souboj s minibossem \n";
+            souboj(1, 20, 4, true);
+        }
+        else if (event == "HB") {
+            cout << "\n Souboj s final bossem\n";
+            souboj(1, 30, 5, true);
+            cout << "\n Souboj s final bossem ste vyhrali dostavate zlateho bludistaka\n";
+            break;
+        }
+    }
+
+}
+// Souboj s monstry a hodnoty monster s radou od ai
+void souboj(int monsterCount, int monsterHPMax, int monsterAttack, bool jeBoss) {
+    vector<int> monsterHP(monsterCount, monsterHPMax);
+    bool playerTurn = !jeBoss;
+    while (true) {
+        if (playerTurn) {
+            // tady si hrac bude vybirat co chce udelat
+        }
+    }
 }
